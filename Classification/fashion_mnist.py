@@ -1,11 +1,14 @@
-# Fashion Mnist with CNN (Convolutional Neural Network)
+"""Fashion Mnist with CNN (Convolutional Neural Network)"""
 
 # import libraries
+from __future__ import print_function
+from __future__ import division
+from __future__ import absolute_import
 
 import numpy as np
 from keras.models import Model
 from keras.layers import Conv2D, Flatten, MaxPooling2D
-from keras.layers import Dropout, Dense, Input
+from keras.layers import Dropout, Dense, Input, BatchNormalization
 from keras.datasets import fashion_mnist
 import matplotlib.pyplot as plt
 from random import randint, seed
@@ -49,6 +52,7 @@ def build_model(filters,kernel_size,dropout):
     for i in range(3):
         cnn = Conv2D(filters=filters,kernel_size=kernel_size,padding='same',
                    activation='relu')(inputs)
+        cnn = BatchNormalization()(cnn)
         cnn = Dropout(dropout)(cnn)
         cnn = MaxPooling2D()(cnn)
         filters *= 2
