@@ -56,7 +56,7 @@ def build_model():
 	
 model = build_model()
 		
-# build and train the network
+# training
 opt = RMSprop(learning_rate=0.0001, decay=1e-6)
 model.compile(optimizer=opt, loss='sparse_categorical_crossentropy',
                   metrics=['accuracy'])
