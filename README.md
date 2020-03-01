@@ -1,6 +1,6 @@
-# Deep Learning with Keras (On going) - Python 3 format
+# Deep Learning with Keras (On going) - Python 3 version
 
-This repository contains my personal experimentation && training (from various sources) on Deep Learning; for which, I have a great passion. This is the Python 3 format version of the following: https://github.com/AndryRafam/DEEP-LEARNING. 
+This repository contains my personal experimentation && training (from various sources) on Deep Learning; for which, I have a great passion. This is the Python 3 version of the following: https://github.com/AndryRafam/DEEP-LEARNING. 
 
 - Following are useful sites:
     - Jupyter Notebook: https://jupyter.org/
