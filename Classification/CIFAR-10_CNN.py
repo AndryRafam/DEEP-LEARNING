@@ -1,4 +1,4 @@
-# CNN (Convolutional Neural Network) on CIFAR-10 - 773.% accuracy
+# CNN (Convolutional Neural Network) on CIFAR-10 - 77.3% accuracy
 
 from __future__ import print_function
 from __future__ import absolute_import
