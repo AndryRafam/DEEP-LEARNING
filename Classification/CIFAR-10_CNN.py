@@ -1,4 +1,4 @@
-# CNN (Convolutional Neural Network) on CIFAR-10 - 77.3% accuracy
+# CNN (Convolutional Neural Network) on CIFAR-10 - 77.5% accuracy
 
 from __future__ import print_function
 from __future__ import absolute_import
@@ -33,7 +33,7 @@ batch_size = 32
 input_shape = (image_size,image_size,3)
 kernel_size = 3
 n_filters = 32
-epochs = 100
+epochs = 90
 
 inputs = Input(shape=input_shape)
 
