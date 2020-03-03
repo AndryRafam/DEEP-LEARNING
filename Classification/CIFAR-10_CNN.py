@@ -1,4 +1,4 @@
-# CNN (Convolutional Neural Network) on CIFAR-10 - 77.5% accuracy
+# CNN (Convolutional Neural Network) on CIFAR-10 - 77,5 % accuracy
 
 from __future__ import print_function
 from __future__ import absolute_import
@@ -53,17 +53,18 @@ def build_model():
 	y = Dropout(0.5)(y)
 	outputs = Dense(num_classes, activation='softmax')(y)
 	return Model(inputs,outputs)
-	
-model = build_model()
-		
-# training
-opt = RMSprop(learning_rate=0.0001, decay=1e-6)
-model.compile(optimizer=opt, loss='sparse_categorical_crossentropy',
-                  metrics=['accuracy'])
-model.fit(x_train, y_train, validation_data=(x_test,y_test), epochs=epochs, batch_size=batch_size)
-print("\n")
 
-# print the test accuracy
-score = model.evaluate(x_test,y_test)
-print("\n\n\tTest accuracy: %.2f%%" % (100.0*score[1]))
-print("\n\n")
+if __name__ == '__main__':	
+	model = build_model()
+		
+	# build and train the network
+	opt = RMSprop(learning_rate=0.0001, decay=1e-6)
+	model.compile(optimizer=opt, loss='sparse_categorical_crossentropy',
+                  metrics=['accuracy'])
+	model.fit(x_train, y_train, validation_data=(x_test,y_test), epochs=epochs, batch_size=batch_size)
+	print("\n")
+
+	# print the test accuracy
+	score = model.evaluate(x_test,y_test)
+	print("\n\n\tTest accuracy: %.2f%%" % (100.0*score[1]))
+	print("\n\n")
