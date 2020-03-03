@@ -61,25 +61,25 @@ def build_model(filters,kernel_size,dropout):
     outputs = Dense(num_labels,activation='softmax')(cnn)
     return Model(inputs,outputs)
 
-model = build_model(filters,kernel_size,dropout)
+if __name__ == '__main__':
+	model = build_model(filters,kernel_size,dropout)
 
-# train model
-model.compile(optimizer='adamax',loss='sparse_categorical_crossentropy',
-              metrics=['accuracy'])
-model.fit(x_train,y_train,validation_data=(x_test,y_test),epochs=epochs,batch_size=batch_size)
+	# train model
+	model.compile(optimizer='adamax',loss='sparse_categorical_crossentropy', metrics=['accuracy'])
+	model.fit(x_train,y_train,validation_data=(x_test,y_test),epochs=epochs,batch_size=batch_size)
 
-# accuracy
-score = model.evaluate(x_test,y_test,batch_size=batch_size)
-print("\nACCURACY: %.1f%%" % (100*score[1]))
+	# accuracy
+	score = model.evaluate(x_test,y_test,batch_size=batch_size)
+	print("\nACCURACY: %.1f%%" % (100*score[1]))
 
-# Let's make some prediction
-class_number = [0,1,2,3,4,5,6,7,8,9]
-for i in range(5):
-    seed()
-    image_index = randint(0,10000)
-    plt.imshow(x_test[image_index].reshape(image_size,image_size),cmap='gray')
-    plt.xlabel(class_number[y_test[image_index]])
-    plt.show()
-    pred = model.predict(x_test[image_index].reshape(-1,image_size,image_size,1))
-    print("PREDICTION = ", pred.argmax(), " Image Class = ", class_number[y_test[image_index]])
-    print("\n")
+	# Let's make some prediction
+	class_number = [0,1,2,3,4,5,6,7,8,9]
+	for i in range(5):
+		seed()
+		image_index = randint(0,10000)
+		plt.imshow(x_test[image_index].reshape(image_size,image_size),cmap='gray')
+		plt.xlabel(class_number[y_test[image_index]])
+		plt.show()
+		pred = model.predict(x_test[image_index].reshape(-1,image_size,image_size,1))
+		print("PREDICTION = ", pred.argmax(), " Image Class = ", class_number[y_test[image_index]])
+		print("\n")
