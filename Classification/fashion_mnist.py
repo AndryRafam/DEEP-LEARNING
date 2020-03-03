@@ -48,18 +48,17 @@ epochs = 20
 kernel_size = 5
 
 def build_model(filters,kernel_size,dropout):
-    inputs = Input(shape=input_shape)
-    for i in range(3):
-        cnn = Conv2D(filters=filters,kernel_size=kernel_size,padding='same',
-                   activation='relu')(inputs)
-        cnn = BatchNormalization()(cnn)
-        cnn = Dropout(dropout)(cnn)
-        cnn = MaxPooling2D()(cnn)
-        filters *= 2
-    cnn = Flatten()(cnn)
-    cnn = Dropout(dropout)(cnn)
-    outputs = Dense(num_labels,activation='softmax')(cnn)
-    return Model(inputs,outputs)
+	inputs = Input(shape=input_shape)
+	for i in range(3):
+        	cnn = Conv2D(filters=filters,kernel_size=kernel_size,padding='same', activation='relu')(inputs)
+        	cnn = BatchNormalization()(cnn)
+        	cnn = Dropout(dropout)(cnn)
+        	cnn = MaxPooling2D()(cnn)
+        	filters *= 2
+	cnn = Flatten()(cnn)
+	cnn = Dropout(dropout)(cnn)
+	outputs = Dense(num_labels, activation='softmax')(cnn)
+	return Model(inputs,outputs)
 
 if __name__ == '__main__':
 	model = build_model(filters,kernel_size,dropout)
