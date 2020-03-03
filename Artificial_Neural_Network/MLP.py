@@ -71,8 +71,7 @@ if __name__ == '__main__':
 	history = model.fit(x_train,y_train, epochs=epochs, validation_data=(x_test,y_test), batch_size=batch_size)
 	print("\n")
 	print(history.history.keys())
-
-	### validate the model on test dataset to determmine generalization
+	
 	score = model.evaluate(x_test, y_test, batch_size=batch_size)
 	print("\nTest accuracy: %.1f%%" % (100.0*score[1]))
 	print("\n")
