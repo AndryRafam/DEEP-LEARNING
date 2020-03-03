@@ -1,13 +1,20 @@
+""" MLP on fashion_MNIST with l2 regularizer - 88,7% accuracy over 50 epochs """
+
 ### import libraries
+from __future__ import print_function
+from __future__ import division
+from __future__ import absolute_import
+
 import numpy as np
-from keras.models import Sequential
-from keras.layers import Dense, Activation, Dropout, Input
+from keras.layers import Dense, Activation
+from keras.layers import Input
 from keras.models import Model
-from keras.datasets import mnist
+from keras.datasets import fashion_mnist
+from keras.regularizers import l2
 import matplotlib.pyplot as plt
 
 ### load data
-(x_train,y_train), (x_test,y_test) = mnist.load_data()
+(x_train,y_train), (x_test,y_test) = fashion_mnist.load_data()
 
 ### computer the number of labels
 num_labels = len(np.unique(y_train))
@@ -41,41 +48,32 @@ x_test = x_test.astype('float32')/255
 ### network parameters
 batch_size = 128
 hidden_units = 256
-dropout = 0.45
-
+kernel_regul = l2(0.0001)
+epochs=50
 
 ### 3-layer MLP model with relu and dropout after each layer
 
-inputs = Input(shape=(input_shape,))
-for i in range(2):
-	y = Dense(hidden_units)(inputs)
-	y = Activation('relu')(y)
-	y = Dropout(dropout)(y)
+def build_model():
+	inputs = Input(shape=(input_shape,))
+	for i in range(2):
+		y = inputs
+		y = Dense(hidden_units,kernel_regularizer=kernel_regul)(y)
+		y = Activation('relu')(y)
+		
+	y = Dense(num_labels)(y)
+	outputs = Activation('softmax')(y)
+	return Model(inputs,outputs)
 
-y = Dense(num_labels)(y)
-outputs = Activation('softmax')(y)
-
-model = Model(inputs,outputs)
-
+model = build_model()
 model.summary()
 
-### compile and train the model
-model.compile(optimizer='adam', loss='sparse_categorical_crossentropy',
-              metrics=['accuracy'])
-history = model.fit(x_train,y_train, epochs=20, batch_size=batch_size)
-print("\n")
-print(history.history.keys())
+if __name__ == '__main__':
+	model.compile(optimizer='adam', loss='sparse_categorical_crossentropy', metrics=['accuracy'])
+	history = model.fit(x_train,y_train, epochs=epochs, validation_data=(x_test,y_test), batch_size=batch_size)
+	print("\n")
+	print(history.history.keys())
 
-### plotting
-plt.plot(history.history['accuracy'],'bo', label='accuracy')
-plt.plot(history.history['loss'], 'ro', label='loss')
-plt.xlabel('Epoch')
-plt.ylabel('Accuracy')
-plt.ylim([-0.5,1.5])
-plt.legend(loc='best')
-plt.show()
-
-### validate the model on test dataset to determmine generalization
-score = model.evaluate(x_test, y_test, batch_size=batch_size)
-print("\nTest accuracy: %.1f%%" % (100.0*score[1]))
-print("\n")
+	### validate the model on test dataset to determmine generalization
+	score = model.evaluate(x_test, y_test, batch_size=batch_size)
+	print("\nTest accuracy: %.1f%%" % (100.0*score[1]))
+	print("\n")
