@@ -51,8 +51,7 @@ hidden_units = 256
 kernel_regul = l2(0.0001)
 epochs=50
 
-### 3-layer MLP model with relu and dropout after each layer
-
+### 3-layer MLP model with relu and l2 regularizer after each layer
 def build_model():
 	inputs = Input(shape=(input_shape,))
 	for i in range(2):
