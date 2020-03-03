@@ -1,4 +1,4 @@
-""" Siamese network - CNN on mnist """
+""" Siamese network - CNN on MNIST """
 
 from __future__ import print_function
 from __future__ import division
