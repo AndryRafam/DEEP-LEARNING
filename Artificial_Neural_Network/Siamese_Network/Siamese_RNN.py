@@ -1,3 +1,5 @@
+""" Siamese network - RNN on MNIST """
+
 ### import libraries
 import numpy as np
 from keras.layers import Dense, Input, SimpleRNN
