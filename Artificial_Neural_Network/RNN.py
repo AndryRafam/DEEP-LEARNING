@@ -1,9 +1,16 @@
+""" RNN (Recurent Neural Network) on MNIST - 97,9% accuracy over 20 epochs"""
+
 ### import libraries
+from __future__ import print_function
+from __future__ import division
+from __future__ import absolute_import
+
 import numpy as np
-from keras.layers import Dense, Activation, Input, SimpleRNN
+from keras.layers import Dense, Activation 
+from keras.layers import Input, SimpleRNN
+from keras.regularizers import l2
 from keras.models import Model
 from keras.datasets import mnist
-import matplotlib.pyplot as plt
 
 
 ### load data
@@ -12,23 +19,6 @@ import matplotlib.pyplot as plt
 
 ### compute the number of labels
 num_labels = len(np.unique(y_train))
-
-
-### verify the data
-indexes = np.random.randint(0,x_train.shape[0], size=25)
-images = x_train[indexes]
-labels = y_train[indexes]
-
-plt.figure(figsize=(5,5))
-for i in range(len(indexes)):
-    plt.subplot(5,5,i+1)
-    image = images[i]
-    plt.imshow(image,cmap='gray')
-    plt.axis('off')
-
-plt.show()
-plt.close('all')
-
 
 
 ### reshape and renormalize input images
@@ -43,44 +33,31 @@ x_test = x_test.astype('float32')/255
 input_shape = (image_size,image_size)
 batch_size = 128
 units = 256
-dropout = 0.2
+regul = l2(0.0001)
 epochs = 20
 
 
 ### functional API to build CNN layers
 inputs = Input(shape=input_shape)
-y = SimpleRNN(units=units,dropout=dropout)(inputs)
-
-### outputs
-outputs = Dense(num_labels,activation='softmax')(y)
-
+def build_model():
+	y = inputs
+	y = SimpleRNN(units=units, kernel_regularizer=regul)(y)
+	outputs = Dense(num_labels,activation='softmax')(y)
+	return Model(inputs,outputs)
 
 ### build the model
-model = Model(inputs=inputs, outputs=outputs)
+model = build_model()
 model.summary()
-
 
 ### train the model
 model.compile(optimizer='sgd',loss='sparse_categorical_crossentropy',
 		    metrics=['accuracy'])
 history = model.fit(x_train,y_train,
                     validation_data=(x_test,y_test),
-                    epochs=20,batch_size=batch_size)
+                    epochs=epochs,batch_size=batch_size)
 print("\n")
-print(history.history.keys())
-
 
 ### evaluate the model
 score = model.evaluate(x_test,y_test,batch_size=batch_size)
 print("\nTest accuracy: %.1f%%" % (100*score[1]))
 print("\n")
-
-
-### plotting
-plt.plot(history.history['accuracy'],'o',label='accuracy')
-plt.plot(history.history['loss'],'o',label='loss')
-plt.xlabel('Epoch')
-plt.ylabel('Accuracy')
-plt.ylim([0,1])
-plt.legend(loc='best')
-plt.show()
