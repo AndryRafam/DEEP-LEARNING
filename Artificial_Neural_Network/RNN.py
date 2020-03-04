@@ -52,9 +52,7 @@ model.summary()
 ### train the model
 model.compile(optimizer='sgd',loss='sparse_categorical_crossentropy',
 		    metrics=['accuracy'])
-history = model.fit(x_train,y_train,
-                    validation_data=(x_test,y_test),
-                    epochs=epochs,batch_size=batch_size)
+model.fit(x_train,y_train, validation_data=(x_test,y_test), epochs=epochs,batch_size=batch_size)
 print("\n")
 
 ### evaluate the model
