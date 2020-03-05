@@ -11,7 +11,6 @@ from keras.layers import Conv2D, MaxPooling2D, Flatten
 from keras.layers import BatchNormalization, Activation
 from keras.models import Model
 from keras.datasets import mnist
-from random import seed, randint
 import numpy as np
 
 ### load data
