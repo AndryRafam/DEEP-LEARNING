@@ -69,11 +69,9 @@ y_val = y_train[:1000]
 partial_y_train = y_train[1000:]
 
 
-history = model.fit([partial_x_train,partial_x_train],
-                    partial_y_train,
-                    batch_size=batch_size,
-                    validation_data=([x_val,x_val],y_val),
-                    epochs=epochs)
+model.fit([partial_x_train,partial_x_train],
+           partial_y_train, batch_size=batch_size,
+           validation_data=([x_val,x_val],y_val), epochs=epochs)
 
 score = model.evaluate([x_test,x_test],y_test)
 print("\nScore: %.1f%%" % (100.0*score[1]))
