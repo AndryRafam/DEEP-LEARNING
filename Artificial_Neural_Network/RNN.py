@@ -1,61 +1,63 @@
-""" RNN (Recurent Neural Network) on MNIST - 97,9% accuracy over 20 epochs"""
+""" RNN (Recurent Neural Network) on fashion MNIST - 88,3% over 50 epochs """
 
-### import libraries
+# import libraries
 from __future__ import print_function
 from __future__ import division
 from __future__ import absolute_import
 
+import tensorflow
 import numpy as np
-from keras.layers import Dense, Activation 
-from keras.layers import Input, SimpleRNN
-from keras.regularizers import l2
-from keras.models import Model
-from keras.datasets import mnist
+
+from tensorflow.keras.layers import Dense, Activation, Input, SimpleRNN
+from tensorflow.keras.regularizers import l2
+from tensorflow.keras.models import Model
+from tensorflow.keras.datasets import fashion_mnist
 
 
-### load data
-(x_train,y_train), (x_test,y_test) = mnist.load_data()
+class Init(object):
+    def __init__(self): # constructor
+        # load data
+        (self.x_train,self.y_train), (self.x_test,self.y_test) = fashion_mnist.load_data()
+
+        # compute the number of labels
+        self.num_labels = len(np.unique(self.y_train))
+
+        # reshape and renormalize input images
+        self.image_size = self.x_train.shape[1]
+        self.x_train = np.reshape(self.x_train,[-1,self.image_size,self.image_size])
+        self.x_test = np.reshape(self.x_test,[-1,self.image_size,self.image_size])
+        self.x_train = self.x_train.astype('float32')/255
+        self.x_test = self.x_test.astype('float32')/255
+
+        # network parameters
+        self.input_shape = (self.image_size,self.image_size)
+        self.batch_size = 128
+        self.units = 256
+        self.regul = l2(0.0001)
+        self.epochs = 50
+
+class RNN(Init):
+    def build_train_model(self):
+        #build model
+        self.inputs = Input(shape=self.input_shape)
+        self.y = SimpleRNN(units=self.units,kernel_regularizer=self.regul)(self.inputs)
+        self.outputs = Dense(self.num_labels,activation='softmax')(self.y)
+        self.model = Model(self.inputs,self.outputs)
+
+        self.model.summary()
+        print("\n")
+
+        # train model
+        self.model.compile(optimizer='sgd',loss='sparse_categorical_crossentropy',
+                           metrics=['accuracy'])
+        self.model.fit(self.x_train,self.y_train,validation_data=(self.x_test,self.y_test),
+                       epochs=self.epochs,batch_size=self.batch_size)
+        self.score = self.model.evaluate(self.x_test,self.y_test,batch_size=self.batch_size)
+        print("\nTest accuracy: %.1f%%" % (100*self.score[1]))
+        print("\n")
 
 
-### compute the number of labels
-num_labels = len(np.unique(y_train))
 
-
-### reshape and renormalize input images
-image_size = x_train.shape[1]
-x_train = np.reshape(x_train,[-1,image_size,image_size])
-x_test = np.reshape(x_test,[-1,image_size,image_size])
-x_train = x_train.astype('float32')/255
-x_test = x_test.astype('float32')/255
-
-
-### network parameters
-input_shape = (image_size,image_size)
-batch_size = 128
-units = 256
-regul = l2(0.0001)
-epochs = 20
-
-
-### functional API to build CNN layers
-inputs = Input(shape=input_shape)
-def build_model():
-	y = inputs
-	y = SimpleRNN(units=units, kernel_regularizer=regul)(y)
-	outputs = Dense(num_labels,activation='softmax')(y)
-	return Model(inputs,outputs)
-
-### build the model
-model = build_model()
-model.summary()
-
-### train the model
-model.compile(optimizer='sgd',loss='sparse_categorical_crossentropy',
-		    metrics=['accuracy'])
-model.fit(x_train,y_train, validation_data=(x_test,y_test), epochs=epochs,batch_size=batch_size)
-print("\n")
-
-### evaluate the model
-score = model.evaluate(x_test,y_test,batch_size=batch_size)
-print("\nTest accuracy: %.1f%%" % (100*score[1]))
-print("\n")
+if __name__=='__main__':
+    rnn = RNN()
+    rnn.build_train_model()
