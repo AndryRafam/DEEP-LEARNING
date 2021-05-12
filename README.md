@@ -1,4 +1,4 @@
-# Deep Learning with Tensorflow / Keras (Ongoing)
+# Deep Learning with Tensorflow2 / Keras (Ongoing) - Python3
 
 This repository contains my personal experimentation on Deep Learning; for which, I have a great passion.
 
