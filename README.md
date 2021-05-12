@@ -1,4 +1,4 @@
-# Deep Learning with Keras (On going) - Python 3 version
+# Deep Learning with Tensorflow / Keras (On going)
 
 This repository contains my personal experimentation on Deep Learning; for which, I have a great passion.
 
