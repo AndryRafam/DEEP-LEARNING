@@ -1,9 +1,5 @@
 # Deep Learning with Tensorflow2 / Keras (Ongoing) - Python3
 
-This repository contains my personal experimentation on Deep Learning; for which, I have a great passion.
+This repository contains my personal experiences on Deep Learning and Neural Networks; for which, I have a great passion.
 
-Some books which I use to learn Deep Learning:
-
-- https://www.packtpub.com/product/advanced-deep-learning-with-tensorflow-2-and-keras-second-edition/9781838821654
-- https://www.manning.com/books/deep-learning-for-vision-systems
     
